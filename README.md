@@ -27,7 +27,11 @@ The goal of the project is to classify the disaster messages into categories. Di
 
 In the data and models folder you can find two jupyter notebook that will help you understand how the model works step by step:
 
-    ETL Preparation Notebook: learn everything about the implemented ETL pipeline
-    ML Pipeline Preparation Notebook: look at the Machine Learning Pipeline developed with NLTK and Scikit-Learn
+   1. ETL Preparation Notebook: learn everything about the implemented ETL pipeline
+   2. ML Pipeline Preparation Notebook: look at the Machine Learning Pipeline developed with NLTK and Scikit-Learn
 
 You can use ML Pipeline Preparation Notebook to re-train the model or tune it through a dedicated Grid Search section.
+
+### Acknowledgements
+- Udacity Data Science Nanodegree Program
+- Figure Eight for providing the data
