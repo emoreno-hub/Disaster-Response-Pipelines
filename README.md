@@ -35,3 +35,6 @@ You can use ML Pipeline Preparation Notebook to re-train the model or tune it th
 ### Acknowledgements
 - Udacity Data Science Nanodegree Program
 - Figure Eight for providing the data
+
+### Author
+- Eric Moreno
