@@ -131,7 +131,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
         model_accuracy: overall model accuracy
     '''
     y_pred_test = model.predict(X_test)
-    print(classification_report(y_test.values, y_pred_test, target_names=y.columns.values))
+    print(classification_report(Y_test.values, y_pred_test, target_names=category_names))
     model_accuracy = (y_pred_test == y_test.values).mean()
     
     return model_accuracy
