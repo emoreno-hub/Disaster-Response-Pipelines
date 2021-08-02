@@ -5,6 +5,15 @@ import re
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    '''
+    Parameters:
+        messages_filepath: csv file containing messages
+        categories_filepath: csv file containing categories
+        
+    Returns:
+        df: combined dataframe
+    '''
+    
     # load messages dataset
     messages = pd.read_csv(messages_filepath)
     # load categories dataset
@@ -15,6 +24,13 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
+    '''
+    Parameters:
+        df: combined dataframe from load_data()
+    Returns:
+        df:  cleaned dataframe
+    '''
+    
     # create a dataframe of the 36 individual category columns
     categories = df['categories'].str.split(';', expand=True)
     
@@ -49,6 +65,9 @@ def clean_data(df):
     return df    
     
 def save_data(df, database_filename):
+    '''
+    Save data for SQLite database as .db file
+    '''
     engine = create_engine('sqlite:///DisasterResponse.db')
     df.to_sql('Messages', engine, index=False)
     
