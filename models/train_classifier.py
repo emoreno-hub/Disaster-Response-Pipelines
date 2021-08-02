@@ -49,6 +49,8 @@ def tokenize(text):
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         clean_tokens.append(clean_tok)
         
+    return clean_tokens
+        
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
 
     def starting_verb(self, text):
@@ -66,9 +68,6 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     def transform(self, X):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
-        
-    return clean_tokens
-
 
 def build_model():
     # create pipeline
