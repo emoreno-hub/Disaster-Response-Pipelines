@@ -7,8 +7,8 @@ The goal of the project is to classify the disaster messages into categories. Di
 - Re for regular expressions
 - Scikit-Learn for machine learning
 - NLTK for natural language processing
-- SQLAlchemy to read and write an SQLite database
-- Flask which allows user to enter a disaster message and retrieve the associated category for the message
+- SQLAlchemy to read and write a SQLite database
+- Flask which allows user to enter a disaster message and retrieve its associated category
 
 ### Execution Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
