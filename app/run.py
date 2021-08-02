@@ -5,6 +5,7 @@ import pandas as pd
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.base import BaseEstimator, TransformerMixin
+import nltk
 
 from flask import Flask
 from flask import render_template, request, jsonify
@@ -40,6 +41,10 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
 
+    def transform(self, X):
+        X_tagged = pd.Series(X).apply(self.starting_verb)
+        return pd.DataFrame(X_tagged)
+
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql_table('Messages', engine)
@@ -57,6 +62,9 @@ def index():
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
+    
+    category_boolean_val = (df.iloc[:,4:] != 0).sum().values
+    category_names = df.iloc[:,4:].columns
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -84,7 +92,7 @@ def index():
             'data': [
                 Bar(
                     x=category_names,
-                    y=category_boolean
+                    y=category_boolean_val
                 )
             ],
 
