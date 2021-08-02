@@ -108,15 +108,20 @@ def build_model():
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
     
-    return pipeline
+    # define GridSearch parameters
+    grid_values = {'tfidf__use_idf': (True, False),
+        'clf__estimator__n_estimators': [10, 20]}
     
-
+    # create model using GridSearch
+    cv = GridSearchCV (pipeline, param_grid=grid_values, scoring='f1_micro', cv=3, n_jobs=8)
+    
+    return cv
 
 def evaluate_model(model, X_test, Y_test, category_names):
     '''
     Evaluates the ML model using accuracy, precision, recall, and F1 score for each label, and overall model accuracy.
     '''
-    y_pred_test = pipeline.predict(X_test)
+    y_pred_test = model.predict(X_test)
     print(classification_report(y_test.values, y_pred_test, target_names=y.columns.values))
     model_accuracy = (y_pred_test == y_test.values).mean()
     
