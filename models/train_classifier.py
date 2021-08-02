@@ -120,6 +120,15 @@ def build_model():
 def evaluate_model(model, X_test, Y_test, category_names):
     '''
     Evaluates the ML model using accuracy, precision, recall, and F1 score for each label, and overall model accuracy.
+    Parameters:
+        model: classification model
+        X_test: test messages
+        Y_test: test target labels
+        category_names: category names
+    
+    Returns:
+        F1 Score, precision, and recall are printed for each category.
+        model_accuracy: overall model accuracy
     '''
     y_pred_test = model.predict(X_test)
     print(classification_report(y_test.values, y_pred_test, target_names=y.columns.values))
@@ -128,6 +137,14 @@ def evaluate_model(model, X_test, Y_test, category_names):
     return model_accuracy
 
 def save_model(model, model_filepath):
+    '''
+    Parameters:
+        model: classification model
+        model_filepath: path of pickle file
+    
+    Returns:
+        A pickle file of the model is returned
+    '''
     with open (model_filepath, 'wb') as f:
         pickle.dump(model, f)
 
