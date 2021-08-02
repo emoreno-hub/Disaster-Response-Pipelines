@@ -26,7 +26,7 @@ from sklearn.metrics import classification_report
 from sqlalchemy import create_engine
 
 def load_data(database_filepath):
-    engine = create_engine('sqlite:///DisasterResponse.db')
+    engine = create_engine('sqlite:///'+ database_filepath)
     df = pd.read_sql ('SELECT * FROM Messages', engine)
     X = df['message']
     y = df.iloc[:,4:]
