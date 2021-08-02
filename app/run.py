@@ -27,7 +27,7 @@ def tokenize(text):
 
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
-df = pd.read_sql_table('df', engine)
+df = pd.read_sql_table('Messages', engine)
 
 # load model
 model = joblib.load("../models/classifier.pkl")
