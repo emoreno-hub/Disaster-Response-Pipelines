@@ -10,6 +10,29 @@ The goal of the project is to classify the disaster messages into categories. Di
 - SQLAlchemy to read and write a SQLite database
 - Flask which allows user to enter a disaster message and retrieve its associated category
 
+### Project Overview
+The project contains three components:
+1. **ETL Pipeline:**  `process_date.py` file containing the script to create the ETL pipeline.
+2. **ML Pipeline:**  `train_classifier.py` file containing the script to create the ML pipeline.
+3. **Flask Web App:**  this is a web app which enables the user to enter a disaster message and then view the categories of the message.
+
+### File Structure
+    app
+    | - template
+    | |- master.html # main page of web app
+    | |- go.html # classification result page of web app
+    |- run.py # Flask file that runs app
+    data
+    |- disaster_categories.csv # data to process
+    |- disaster_messages.csv # data to process
+    |- process_data.py
+    |- InsertDatabaseName.db # database to save clean data to
+    models
+    |- train_classifier.py
+    |- classifier.pkl # saved model
+    README.md
+
+
 ### Execution Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
