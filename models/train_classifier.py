@@ -26,15 +26,33 @@ from sklearn.metrics import classification_report
 from sqlalchemy import create_engine
 
 def load_data(database_filepath):
+    '''
+    Parameters:
+       database_filepath: path to SQLite database
+       
+    Returns:
+        X: feature columns
+        y: target column
+        category_names: target labels
+    
+    '''
     engine = create_engine('sqlite:///'+ database_filepath)
     df = pd.read_sql ('SELECT * FROM Messages', engine)
     X = df['message']
     y = df.iloc[:,4:]
     category_names = y.columns
-    return X,y, category_names
+    return X, y, category_names
 
 
 def tokenize(text):
+    '''
+    Parameters:
+        text: message from disaster response system
+    
+    Returns:
+        clean_tokens: list of tokens that have been lemmatized
+    '''
+    
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     
     detected_urls = re.findall(url_regex, text)
@@ -52,6 +70,9 @@ def tokenize(text):
     return clean_tokens
         
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+    '''
+    This extracts the starting verb of a sentence which will be part of the ML pipeline.    
+    '''
 
     def starting_verb(self, text):
         sentence_list = nltk.sent_tokenize(text)
@@ -70,7 +91,9 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         return pd.DataFrame(X_tagged)
 
 def build_model():
-    # create pipeline
+    '''
+    Build the ML pipeline
+    '''
     pipeline = Pipeline([
         ('features', FeatureUnion([
 
@@ -90,6 +113,9 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    Evaluates the ML model using accuracy, precision, recall, and F1 score for each label, and overall model accuracy.
+    '''
     y_pred_test = pipeline.predict(X_test)
     print(classification_report(y_test.values, y_pred_test, target_names=y.columns.values))
     model_accuracy = (y_pred_test == y_test.values).mean()
