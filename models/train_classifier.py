@@ -30,7 +30,7 @@ def load_data(database_filepath):
     df = pd.read_sql ('SELECT * FROM Messages', engine)
     X = df['message']
     y = df.iloc[:,4:]
-    category_names = Y.columns
+    category_names = y.columns
     return X,y, category_names
 
 
@@ -85,11 +85,6 @@ def build_model():
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
     
-    X_train, X_test, y_train, y_test = train_test_split(X, y)
-    
-    # train classifier
-    pipeline.fit(X_train, y_train)
-    
     return pipeline
     
 
@@ -102,8 +97,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
     return model_accuracy
 
 def save_model(model, model_filepath):
-    file_name = 'classifier.pkl'
-    with open (file_name, 'wb') as f:
+    with open (model_filepath, 'wb') as f:
         pickle.dump(model, f)
 
 
