@@ -1,16 +1,58 @@
 import sys
-
+import pandas as pd
+import numpy as np
+import re
+from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
-    pass
-
+    # load messages dataset
+    messages = pd.read_csv('messages.csv')
+    # load categories dataset
+    categories = pd.read_csv('categories.csv')
+    
+    # merge datasets
+    df = messages.merge(categories, on='id')
+    return df
 
 def clean_data(df):
-    pass
+    # create a dataframe of the 36 individual category columns
+    categories = df['categories'].str.split(';', expand=True)
+    
+    # select the first row of the categories dataframe
+    row = categories.iloc[0]
+    
+    # use slicing to get the characters up to the 2nd to the last character
+    category_colnames = [word for word in row.apply(lambda x: x[:-2])]
+    
+    # rename the columns of `categories`
+    categories.columns = category_colnames
+    
+    for column in categories:
+        # set each value to be the last character of the string
+        categories[column] = categories[column].str [-1]
+        # convert column from string to numeric
+        categories[column] = categories[column].astype(int)
+    
+    # drop the original categories column from `df
+    df.drop('categories', axis=1, inplace=True)
 
-
+    # concatenate the original dataframe with the new `categories` dataframe
+    df = pd.concat([df, categories], axis=1, sort=False)
+    
+    # drop duplicates
+    df = df.drop_duplicates(['id','message'])
+    
+    # drop child_alone column and any row that has a value of 2
+    df.drop('child_alone', axis=1, inplace=True)
+    df = df[df['related'] != 2]
+    
+    return df    
+    
 def save_data(df, database_filename):
-    pass  
+    engine = create_engine('sqlite:///DisasterResponse.db')
+    df.to_sql('Messages', engine, index=False)
+    
+    pass
 
 
 def main():
