@@ -1,24 +1,111 @@
 import sys
+import re
+import pandas as pd
+import numpy as np
+import pickle
 
+# nltk libraries
+import nltk
+nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger','stopwords'])
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem.wordnet import WordNetLemmatizer
+
+# machine learning libraries
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.metrics import classification_report
+
+# sql libraries
+from sqlalchemy import create_engine
 
 def load_data(database_filepath):
-    pass
+    engine = create_engine('sqlite:///DisasterResponse.db')
+    df = pd.read_sql ('SELECT * FROM Messages', engine)
+    X = df['message']
+    y = df.iloc[:,4:]
+    category_names = Y.columns
+    return X,y, category_names
 
 
 def tokenize(text):
-    pass
+    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    
+    detected_urls = re.findall(url_regex, text)
+    for url in detected_urls:
+        text = text.replace(url, "urlplaceholder")
+
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+        
+class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+
+    def starting_verb(self, text):
+        sentence_list = nltk.sent_tokenize(text)
+        for sentence in sentence_list:
+            pos_tags = nltk.pos_tag(tokenize(sentence))
+            first_word, first_tag = pos_tags[0]
+            if first_tag in ['VB', 'VBP'] or first_word == 'RT':
+                return True
+        return False
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X_tagged = pd.Series(X).apply(self.starting_verb)
+        return pd.DataFrame(X_tagged)
+        
+    return clean_tokens
 
 
 def build_model():
-    pass
+    # create pipeline
+    pipeline = Pipeline([
+        ('features', FeatureUnion([
+
+            ('text_pipeline', Pipeline([
+                ('vect', CountVectorizer(tokenizer=tokenize)), # using updated tokenize function
+                ('tfidf', TfidfTransformer(use_idf=False)) # false setting from GridSearch
+            ])),
+
+            ('starting_verb', StartingVerbExtractor())
+        ])),
+
+        ('clf', MultiOutputClassifier(AdaBoostClassifier()))
+    ])
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    
+    # train classifier
+    pipeline.fit(X_train, y_train)
+    
+    return pipeline
+    
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    pass
-
+    y_pred_test = pipeline.predict(X_test)
+    print(classification_report(y_test.values, y_pred_test, target_names=y.columns.values))
+    model_accuracy = (y_pred_test == y_test.values).mean()
+    
+    return model_accuracy
 
 def save_model(model, model_filepath):
-    pass
+    file_name = 'classifier.pkl'
+    with open (file_name, 'wb') as f:
+        pickle.dump(model, f)
 
 
 def main():
