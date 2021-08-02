@@ -60,7 +60,10 @@ def clean_data(df):
     
     # drop child_alone column and any row that has a value of 2
     df.drop('child_alone', axis=1, inplace=True)
-    df = df[df['related'] != 2]
+    
+    # the value 2 in the related column will be replaced with a 1 and converted to an integer
+    df['related'] = df['related'].astype('str').str.replace('2', '1')
+    df['related'] = df['related'].astype('int')
     
     return df    
     
