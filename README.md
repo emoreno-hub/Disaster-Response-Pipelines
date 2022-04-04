@@ -56,8 +56,16 @@ In the data and models folder you can find two jupyter notebook that will help y
 You can use ML Pipeline Preparation Notebook to re-train the model or tune it through a dedicated Grid Search section.
 
 ------------------
+### Screenshots
+1. This is an example of the input screen where you can type in a message which will then be classified by the machine learning model. In the example below the message states "hello I see the fire from my neighbour house, I think they are in danger!"
+(https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/sample_input.png)
 
-https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/sample_input.png
+2. After clicking on Classify Message, the classified categories associated with the message will be highlighted in green.
+(https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/sample_output.png)
+
+
+3. The main page shows several graphs associated with the training set.
+(https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/main_page.png)
 
 ### Acknowledgements
 - Udacity Data Science Nanodegree Program
