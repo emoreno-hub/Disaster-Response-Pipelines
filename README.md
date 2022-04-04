@@ -68,7 +68,6 @@ You can use ML Pipeline Preparation Notebook to re-train the model or tune it th
 ![alt text](https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/main_page.png)
 
 ### Acknowledgements
-- Udacity Data Science Nanodegree Program
 - Figure Eight for providing the data
 
 ### Author
