@@ -58,7 +58,7 @@ You can use ML Pipeline Preparation Notebook to re-train the model or tune it th
 ------------------
 ### Screenshots
 1. This is an example of the input screen where you can type in a message which will then be classified by the machine learning model. In the example below the message states "hello I see the fire from my neighbour house, I think they are in danger!"
-(https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/sample_input.png)
+!(https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/sample_input.png)
 
 2. After clicking on Classify Message, the classified categories associated with the message will be highlighted in green.
 (https://github.com/emoreno-hub/Disaster-Response-Pipelines/blob/main/Screenshots/sample_output.png)
