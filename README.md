@@ -1,6 +1,6 @@
 # Disaster Response Pipeline Project
 ### Project Motivation
-The goal of the project is to classify the disaster messages into categories. Disaster data from Figure Eight is used to build a model for an API that classifies disaster messages. Through a web app, the user can input a new message and get classification results in several categories.
+The goal of the project is to classify the disaster messages into categories. Disaster data from Figure Eight is used to build a model for an API that classifies disaster messages. Through a web app, the user can input a new message and get classification results in several categories. The data provided by Figure Eight contains real messages that were sent during disaster events.
 
 ### Required Libraries
 - Pandas for data manipulation
@@ -14,7 +14,22 @@ The goal of the project is to classify the disaster messages into categories. Di
 The project contains three components:
 1. **ETL Pipeline:**  `process_date.py` file containing the script to create the ETL pipeline.
 2. **ML Pipeline:**  `train_classifier.py` file containing the script to create the ML pipeline.
-3. **Flask Web App:**  this is a web app which enables the user to enter a disaster message and then view the categories of the message.
+3. **Flask Web App:**  web app which enables the user to enter a disaster message and then view the categories of the message.
+
+### ETL Pipeline Overview
+The ETL pipeline cleans and processes the raw data for messages and categories datasets and writes the data to an SQLite database.
+
+### Machine Learning Pipeline Overview
+The machine learning pipeline processes cleaned data from the ETL pipeline to predict classifications across **36 categories** using **multi-output classification**. The key steps include:
+
+1. **Data Splitting**: The dataset is divided into a **training set** and a **test set**.
+2. **Pipeline Construction**: A machine learning pipeline is built using:
+   - **NLTK** for text processing,
+   - **Scikit-learn's `Pipeline`** to streamline preprocessing and model training,
+   - **`GridSearchCV`** for hyperparameter tuning.
+3. **Model Training & Evaluation**: The pipeline trains on the message column and optimizes performance using cross-validation.
+4. **Model Export**: The final trained model is saved as a **pickle file (`.pkl`)** for deployment.
+5. **Script Integration**: The final model implementation is included in `train_classifier.py`.
 
 ### File Structure
     app
