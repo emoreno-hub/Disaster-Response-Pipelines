@@ -16,10 +16,10 @@ The project contains three components:
 2. **ML Pipeline:**  `train_classifier.py` file containing the script to create the ML pipeline.
 3. **Flask Web App:**  web app which enables the user to enter a disaster message and then view the categories of the message.
 
-### ETL Pipeline Overview
+### ETL Pipeline
 The ETL pipeline cleans and processes the raw data for messages and categories datasets and writes the data to an SQLite database.
 
-### Machine Learning Pipeline Overview
+### Machine Learning Pipeline
 The machine learning pipeline processes cleaned data from the ETL pipeline to predict classifications across **36 categories** using **multi-output classification**. The key steps include:
 
 1. **Data Splitting**: The dataset is divided into a **training set** and a **test set**.
